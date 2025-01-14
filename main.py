@@ -27,25 +27,29 @@ def get_channel_data(channelid):
         data = request.json  # 例えばJSONデータを受け取る
         return jsonify({'message': 'POST request received', 'data': data}), 200
         
-@app.route('/search?q=<waod>', methods=['GET', 'POST'])
-def get_word_data(word):
-    # GETメソッドでの処理
+@app.route('/search', methods=['GET', 'POST'])
+def get_word_data():
     if request.method == 'GET':
-        # YouTubeのURLを生成
-        youtube_url = f'https://www.youtube.com/search?q={word}'
+        # クエリパラメータから検索ワードを取得
+        word = request.args.get('q')  # 'q'を取得する
+
+        if not word:
+            return jsonify({'error': 'Search query is missing'}), 400
+
+        # YouTubeの検索URLを生成
+        youtube_url = f'https://www.youtube.com/results?search_query={word}'
 
         # curlでHTMLを取得
         try:
             result = subprocess.run(['curl', '-s', youtube_url], capture_output=True, text=True, check=True)
             html_content = result.stdout
         except subprocess.CalledProcessError as e:
-            return jsonify({'error': 'Failed to fetch data from YouTube'}), 500
+            return jsonify({'error': 'Failed to fetch data from YouTube', 'details': str(e)}), 500
         
         return html_content
 
-    # POSTメソッドでの処理（必要なら実装）
     elif request.method == 'POST':
-        data = request.json  # 例えばJSONデータを受け取る
+        data = request.json  # JSONデータを受け取る
         return jsonify({'message': 'POST request received', 'data': data}), 200
 
 

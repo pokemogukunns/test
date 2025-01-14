@@ -12,7 +12,8 @@ def get_channel_data(channelid):
     # GETメソッドでの処理
     if request.method == 'GET':
         # YouTubeのURLを生成
-        youtube_url = f'https://www.youtube.com/channel/{channelid}'
+        youtube_url = f'https://inv.nadeko.net/channel/{channelid}'
+        #https://www.youtube.com
 
         # curlでHTMLを取得
         try:

@@ -7,16 +7,17 @@ app = Flask(__name__)
 # CORSを設定（すべてのオリジン、GETとPOSTメソッドを許可）
 CORS(app, origins='*', methods=['GET', 'POST'])
 
-@app.route('/channel/<channelid>', methods=['GET', 'POST'])
-def get_channel_data(channelid):
-    # GETメソッドでの処理
-    if request.method == 'GET':
-        # YouTubeのURLを生成
+@app.route('/channel/<channelid>/<nanika>', methods=['GET', 'POST'])
+def get_channel_data(channelid, nanika):
+    # nanikaが空なら含めないURLを作成
+    if not nanika:
         youtube_url = f'https://inv.nadeko.net/channel/{channelid}'
-        #https://www.youtube.com
+    else:
+        youtube_url = f'https://inv.nadeko.net/channel/{channelid}/{nanika}'
 
-        # curlでHTMLを取得
+    if request.method == 'GET':
         try:
+            # curlでHTMLを取得
             result = subprocess.run(['curl', '-s', youtube_url], capture_output=True, text=True, check=True)
             html_content = result.stdout
         except subprocess.CalledProcessError as e:
@@ -26,8 +27,9 @@ def get_channel_data(channelid):
 
     # POSTメソッドでの処理（必要なら実装）
     elif request.method == 'POST':
-        data = request.json  # 例えばJSONデータを受け取る
+        data = request.json  # JSONデータを受け取る
         return jsonify({'message': 'POST request received', 'data': data}), 200
+
         
 #@app.route('/search', methods=['GET', 'POST'])
 #def get_word_data():

@@ -11,7 +11,7 @@ CORS(app, origins='*', methods=['GET', 'POST'])
 def get_channel_data(channelid, nanika):
     # nanikaが空なら含めないURLを作成
     if not nanika:
-        youtube_url = f'https://inv.nadeko.net/channel/{channelid}'
+        nanika = videos
     else:
         youtube_url = f'https://inv.nadeko.net/channel/{channelid}/{nanika}'
 

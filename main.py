@@ -7,14 +7,11 @@ app = Flask(__name__)
 # CORSを設定（すべてのオリジン、GETとPOSTメソッドを許可）
 CORS(app, origins='*', methods=['GET', 'POST'])
 
+# nanikaは省略可能にする（<nanika>はデフォルト値'videos'を使用）
+@app.route('/channel/<channelid>/', defaults={'nanika': 'videos'}, methods=['GET', 'POST'])
 @app.route('/channel/<channelid>/<nanika>', methods=['GET', 'POST'])
 def get_channel_data(channelid, nanika):
-    # nanikaが空なら'videos'を使用
-    if not nanika:
-        nanika = 'videos'  # 'videos'という文字列を代入
-        youtube_url = f'https://inv.nadeko.net/channel/{channelid}/{nanika}'  # nanikaが'videos'に設定された後にURLを生成
-    else:
-        youtube_url = f'https://inv.nadeko.net/channel/{channelid}/{nanika}'
+    youtube_url = f'https://inv.nadeko.net/channel/{channelid}/{nanika}'
 
     if request.method == 'GET':
         try:
@@ -30,6 +27,7 @@ def get_channel_data(channelid, nanika):
     elif request.method == 'POST':
         data = request.json  # JSONデータを受け取る
         return jsonify({'message': 'POST request received', 'data': data}), 200
+
 
         
 #@app.route('/search', methods=['GET', 'POST'])

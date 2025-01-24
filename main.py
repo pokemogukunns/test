@@ -9,9 +9,10 @@ CORS(app, origins='*', methods=['GET', 'POST'])
 
 @app.route('/channel/<channelid>/<nanika>', methods=['GET', 'POST'])
 def get_channel_data(channelid, nanika):
-    # nanikaが空なら含めないURLを作成
+    # nanikaが空なら'videos'を使用
     if not nanika:
-        nanika = videos
+        nanika = 'videos'  # 'videos'という文字列を代入
+        youtube_url = f'https://inv.nadeko.net/channel/{channelid}/{nanika}'  # nanikaが'videos'に設定された後にURLを生成
     else:
         youtube_url = f'https://inv.nadeko.net/channel/{channelid}/{nanika}'
 

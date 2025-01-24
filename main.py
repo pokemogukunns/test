@@ -29,7 +29,30 @@ def get_channel_data(channelid, nanika):
         return jsonify({'message': 'POST request received', 'data': data}), 200
 
 
+@app.route('/playlist', methods=['GET', 'POST'])
+def get_playlist_data():
+    playlist_id = request.args.get('list')  # クエリパラメータからplaylistIDを取得
+    if not playlist_id:
+        return jsonify({'error': 'Playlist ID is required'}), 400
+
+    youtube_url = f'https://inv.nadeko.net/playlist?list={playlist_id}'
+
+    if request.method == 'GET':
+        try:
+            # curlでHTMLを取得
+            result = subprocess.run(['curl', '-s', youtube_url], capture_output=True, text=True, check=True)
+            html_content = result.stdout
+        except subprocess.CalledProcessError as e:
+            return jsonify({'error': 'Failed to fetch data from YouTube'}), 500
         
+        return html_content
+
+    # POSTメソッドでの処理（必要なら実装）
+    elif request.method == 'POST':
+        data = request.json  # JSONデータを受け取る
+        return jsonify({'message': 'POST request received', 'data': data}), 200
+
+
 #@app.route('/search', methods=['GET', 'POST'])
 #def get_word_data():
  #   if request.method == 'GET':

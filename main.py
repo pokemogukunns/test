@@ -11,7 +11,7 @@ CORS(app, origins='*', methods=['GET', 'POST'])
 @app.route('/channel/<channelid>/', defaults={'nanika': 'videos'}, methods=['GET', 'POST'])
 @app.route('/channel/<channelid>/<nanika>', methods=['GET', 'POST'])
 def get_channel_data(channelid, nanika):
-    youtube_url = f'https://m.youtube.com/channel/{channelid}/{nanika}?app=desktop'
+    youtube_url = f'https://www.youtube.com/channel/{channelid}/{nanika}?app=desktop'
 
     if request.method == 'GET':
         try:
